@@ -6,11 +6,15 @@ bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    sent = bot.send_message(message.chat.id, 'Как тебя зовут?')
-    bot.register_next_step_handler(sent, hello)
+    sent = bot.send_message(message.chat.id, 'Привет. Введи номер телефона')
 
-def hello(message):
-    bot.send_message(message.chat.id, 'Привет, {name}. Рад тебя видеть.'.format(name=message.text))
+@bot.message_handler(regexp="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$")
+def handle_message(message):
+
+    # print (message.text)
+    if message.text:
+        print('номер корректен')
+
 
 def main():
     bot.polling()
