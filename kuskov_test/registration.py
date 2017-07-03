@@ -50,7 +50,7 @@ def process_client_step(message):
             user.client = client
         else:
             raise Exception()
-        bot.send_message(chat_id, 'phone ' + str(user.phone) + '\n client:' + user.client)
+        bot.send_message(chat_id, u'Номер телефона: ' + str(user.phone) + '\n'u'Клиент банка: ' + user.client)
     except Exception as e:
         bot.reply_to(message, 'oooops')
         print e
