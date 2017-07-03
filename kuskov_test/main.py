@@ -10,7 +10,6 @@ def start(message):
 
 @bot.message_handler(regexp="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$")
 def handle_message(message):
-
     # print (message.text)
     if message.text:
         print('номер корректен')
