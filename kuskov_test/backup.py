@@ -2,7 +2,6 @@
 
 import telebot
 from telebot import types
-import re
 
 API_TOKEN ='435200176:AAFWWdzzmP6FtRY5d32OJF4yeCjq-tRbBP4'
 
@@ -31,15 +30,10 @@ def process_phone_step(message):
     try:
         chat_id = message.chat.id
         phone = message.text
-        phone2 = message.text
         user = User(phone)
         user_dict[chat_id] = user
-        if re.match('^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$', message.text):
-            msg = bot.reply_to(message, 'Являетесь ли вы клиентом банка:',reply_markup=markup)
-            bot.register_next_step_handler(msg, process_client_step)
-        else:
-            msg = bot.reply_to(message, 'Вы ввели неправильный номер телефона/ Введите еще раз:')
-            bot.register_next_step_handler(msg, process_phone_step)
+        msg = bot.reply_to(message, 'Являетесь ли вы клиентом банка:',reply_markup=markup)
+        bot.register_next_step_handler(msg, process_client_step)
     except Exception as e:
         bot.reply_to(message, 'oooops')
 
@@ -55,20 +49,7 @@ def process_client_step(message):
             user.client = client
         else:
             raise Exception()
-
-        msg = bot.reply_to(message, 'Введите ИНН:')
-        bot.register_next_step_handler(msg, process_inn_step)
-    except Exception as e:
-        bot.reply_to(message, 'oooops')
-        print e
-
-def process_inn_step(message):
-    try:
-        chat_id = message.chat.id
-        inn = message.text
-        user = user_dict[chat_id]
-        user.inn = inn
-        bot.send_message(chat_id, u'Номер телефона: ' + str(user.phone) + '\n'u'Клиент банка: ' + user.client+ '\n'u'ИНН: ' + user.inn)
+        bot.send_message(chat_id, u'Номер телефона: ' + str(user.phone) + '\n'u'Клиент банка: ' + user.client)
     except Exception as e:
         bot.reply_to(message, 'oooops')
 
